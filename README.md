@@ -70,3 +70,9 @@ npm i -D prisma
 npm i @prisma/client
 npx prisma init
 ```
+
+Despues de hacer el modelado de la DB
+
+```
+npx prisma migrate dev
+```
