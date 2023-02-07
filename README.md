@@ -60,3 +60,13 @@ npm run dev
 
 -   Llenar la base de datos con información de pruebas
 ```
+
+# Configuración de Prisma
+
+Instalamos dependencias
+
+```
+npm i -D prisma
+npm i @prisma/client
+npx prisma init
+```
