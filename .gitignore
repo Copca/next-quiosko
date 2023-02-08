@@ -2,6 +2,7 @@
 
 DB_SQL/
 .env
+*.dia
 
 # dependencies
 /node_modules

@@ -76,3 +76,34 @@ Despues de hacer el modelado de la DB
 ```
 npx prisma migrate dev
 ```
+
+Reset DB con prisma
+
+```
+npx prisma migrate reset
+```
+
+Abrir Prisma Studio
+
+```
+npx prisma studio
+```
+
+Cargar la base de datos con "seedData"
+
+1. Crear los archivos sedData en **/prisma/data/**
+2. Hacer el archivo de carga **/prisma/seed.ts**
+3. Instalar la dependencia `npm i ts-node`
+4. Modificar el archivo package.json
+
+```
+"prisma": {
+		"seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
+	},
+```
+
+5. Cargar seedData
+
+```
+npx prisma db seed
+```
