@@ -1,6 +1,6 @@
 import { createContext } from 'react';
 
-import { ICategoria, IPedido, IProducto } from '@/interfaces';
+import { ICategoria, IProducto } from '@/interfaces';
 
 interface ContextProps {
 	// State
@@ -8,7 +8,7 @@ interface ContextProps {
 	categoriaActual: ICategoria | null;
 	productoSelec: IProducto | null;
 	modal: boolean;
-	pedido: IPedido[];
+	pedido: IProducto[];
 
 	// Metodos
 	onCategoria: (categoria: ICategoria) => void;

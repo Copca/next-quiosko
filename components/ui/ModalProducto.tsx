@@ -14,6 +14,7 @@ export const ModalProducto = () => {
 	const [cantidad, setCantidad] = useState(1);
 	const [edicion, setEdicion] = useState(false);
 
+	// Se establece la cantida del Producto seleccionado en Modo edición cuando carga el Modal
 	useEffect(() => {
 		// Revisamos si el productoSeleccionado (modal actual) ya esta el pedido[]
 		if (pedido.some((productoPedido) => productoPedido.id === productoSelec?.id)) {
@@ -22,7 +23,7 @@ export const ModalProducto = () => {
 			);
 
 			setEdicion(true);
-			setCantidad(productoEdicion!.cantidad);
+			setCantidad(productoEdicion?.cantidad!);
 		}
 	}, [pedido, productoSelec]);
 

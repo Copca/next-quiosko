@@ -1,6 +1,6 @@
 import { QuioskoState } from './';
 
-import { ICategoria, IPedido, IProducto } from '@/interfaces';
+import { ICategoria, IProducto } from '@/interfaces';
 
 type QuioskoActionType =
 	| { type: '[Quiosko] - Obtener Categorias'; payload: ICategoria[] }
@@ -8,8 +8,8 @@ type QuioskoActionType =
 	| { type: '[Quiosko] - Categoria Actual'; payload: ICategoria }
 	| { type: '[Quiosko] - Producto Seleccionado'; payload: IProducto }
 	| { type: '[Quiosko] - Modal' }
-	| { type: '[Quiosko] - Agregar Producto a Pedido'; payload: IPedido }
-	| { type: '[Quiosko] - Actualizar Cantidad Producto'; payload: IPedido[] };
+	| { type: '[Quiosko] - Agregar Producto a Pedido'; payload: IProducto }
+	| { type: '[Quiosko] - Actualizar Cantidad Producto'; payload: IProducto[] };
 
 export const quioskoReducer = (
 	state: QuioskoState,
@@ -60,7 +60,8 @@ export const quioskoReducer = (
 			return {
 				...state,
 				modal: !state.modal,
-				pedido: action.payload
+				pedido: action.payload,
+				productoSelec: null
 			};
 
 		default:

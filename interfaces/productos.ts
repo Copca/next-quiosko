@@ -7,11 +7,6 @@ export interface IProducto {
 	imagen: string;
 	categoriaId: number;
 	categoria?: ICategoria;
-}
 
-export interface IPedido {
-	id: number;
-	nombre: string;
-	precio: number;
-	cantidad: number;
+	cantidad?: number;
 }

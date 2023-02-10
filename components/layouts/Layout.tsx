@@ -5,7 +5,7 @@ import { ToastContainer } from 'react-toastify';
 
 import { QuioskoContext } from '@/context';
 
-import { ModalProducto, Sidebar } from '../ui';
+import { ModalProducto, Sidebar, Pasos } from '../ui';
 
 interface Props {
 	pagina: string;
@@ -29,7 +29,9 @@ export const Layout: FC<PropsWithChildren<Props>> = ({ children, pagina }) => {
 						<Sidebar />
 					</aside>
 
-					<main className='md:w-2/3 xl:w-3/4 2xl:w-4/5 h-screen overflow-y-auto'>
+					<main className='md:w-2/3 xl:w-3/4 2xl:w-4/5 h-screen overflow-y-auto p-4'>
+						<Pasos />
+
 						<div className='p-10'>{children}</div>
 					</main>
 				</div>

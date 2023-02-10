@@ -17,7 +17,6 @@ const HomePage: NextPage<Props> = () => {
 	return (
 		<Layout pagina={`Menú ${categoriaActual?.nombre}`}>
 			<h1 className='text-3xl font-black'>{categoriaActual?.nombre}</h1>
-
 			<p className='text-xl my-8'>Elige y personaliza tu pedido a continuación</p>
 
 			<div className='grid gap-4 grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4'>

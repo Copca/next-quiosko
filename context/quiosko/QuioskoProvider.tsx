@@ -4,14 +4,14 @@ import { toast } from 'react-toastify';
 
 import { QuioskoContext, quioskoReducer } from './';
 
-import { ICategoria, IPedido, IProducto } from '@/interfaces';
+import { ICategoria, IProducto } from '@/interfaces';
 
 export interface QuioskoState {
 	categorias: ICategoria[];
 	categoriaActual: ICategoria | null;
 	productoSelec: IProducto | null;
 	modal: boolean;
-	pedido: IPedido[];
+	pedido: IProducto[];
 }
 
 const QUIOSKO_INITIAL_STATE: QuioskoState = {
@@ -59,9 +59,7 @@ export const QuioskoProvider: FC<PropsWithChildren> = ({ children }) => {
 	};
 
 	const onAgregarPedido = (producto: IProducto, cantidad: number) => {
-		// sacamos del objeto la imagen y la categoria (no se usa en pedido)
-		const { imagen, categoria, ...restPedido } = producto;
-		const pedido = { ...restPedido, cantidad };
+		const pedido = { ...producto, cantidad };
 
 		if (state.pedido.some((pedidoState) => pedidoState.id === pedido.id)) {
 			// Actualizar cantidad del producto

@@ -19,7 +19,9 @@ export const Contador: FC<Props> = ({ cantidad, onCantidad }) => {
 				className='text-3xl cursor-pointer hover:text-indigo-600'
 				onClick={() => onClickCantidad(cantidad - 1)}
 			/>
+
 			<p className='w-8 text-center'>{cantidad}</p>
+
 			<BiPlusCircle
 				className='text-3xl cursor-pointer hover:text-indigo-600'
 				onClick={() => onClickCantidad(cantidad + 1)}
