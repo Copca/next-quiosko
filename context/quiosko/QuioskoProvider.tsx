@@ -62,7 +62,7 @@ export const QuioskoProvider: FC<PropsWithChildren> = ({ children }) => {
 		const pedido = { ...producto, cantidad };
 
 		if (state.pedido.some((pedidoState) => pedidoState.id === pedido.id)) {
-			// Actualizar cantidad del producto
+			// Actualizar cantidad del producto (Edicion)
 			const pedidoActualizado = state.pedido.map((pedidoState) =>
 				pedidoState.id === pedido.id ? pedido : pedidoState
 			);
@@ -81,6 +81,10 @@ export const QuioskoProvider: FC<PropsWithChildren> = ({ children }) => {
 		}
 	};
 
+	const onEliminarProductoPedido = (id: number) => {
+		dispatch({ type: '[Quiosko] - Eliminar Producto de Pedido', payload: id });
+	};
+
 	return (
 		<QuioskoContext.Provider
 			value={{
@@ -91,7 +95,8 @@ export const QuioskoProvider: FC<PropsWithChildren> = ({ children }) => {
 				onCategoria,
 				onModal,
 				onProductoModal,
-				onAgregarPedido
+				onAgregarPedido,
+				onEliminarProductoPedido
 			}}
 		>
 			{children}

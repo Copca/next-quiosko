@@ -12,8 +12,8 @@ interface Props {
 }
 
 export const ResumenProducto: FC<Props> = ({ producto }) => {
-	console.log(producto);
-	const { onModal, onProductoModal } = useContext(QuioskoContext);
+	const { onModal, onProductoModal, onEliminarProductoPedido } =
+		useContext(QuioskoContext);
 
 	return (
 		<div className='flex items-center gap-10 shadow p-5 mb-3'>
@@ -50,7 +50,11 @@ export const ResumenProducto: FC<Props> = ({ producto }) => {
 					Editar
 				</button>
 
-				<button type='button' className='btn bg-red-500 hover:bg-red-600'>
+				<button
+					type='button'
+					className='btn bg-red-500 hover:bg-red-600'
+					onClick={() => onEliminarProductoPedido(producto.id)}
+				>
 					<FaRegTrashAlt className='mr-2' />
 					Eliminar
 				</button>

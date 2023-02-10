@@ -9,7 +9,8 @@ type QuioskoActionType =
 	| { type: '[Quiosko] - Producto Seleccionado'; payload: IProducto }
 	| { type: '[Quiosko] - Modal' }
 	| { type: '[Quiosko] - Agregar Producto a Pedido'; payload: IProducto }
-	| { type: '[Quiosko] - Actualizar Cantidad Producto'; payload: IProducto[] };
+	| { type: '[Quiosko] - Actualizar Cantidad Producto'; payload: IProducto[] }
+	| { type: '[Quiosko] - Eliminar Producto de Pedido'; payload: number };
 
 export const quioskoReducer = (
 	state: QuioskoState,
@@ -62,6 +63,14 @@ export const quioskoReducer = (
 				modal: !state.modal,
 				pedido: action.payload,
 				productoSelec: null
+			};
+
+		case '[Quiosko] - Eliminar Producto de Pedido':
+			return {
+				...state,
+				pedido: state.pedido.filter(
+					(productoPedido) => productoPedido.id !== action.payload
+				)
 			};
 
 		default:
