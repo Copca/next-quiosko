@@ -31,10 +31,7 @@ export const Producto: FC<Props> = ({ producto }) => {
 				<button
 					type='button'
 					className='btn bg-indigo-600 hover:bg-indigo-800 w-full'
-					onClick={() => {
-						onProductoModal(producto);
-						onModal();
-					}}
+					onClick={() => onProductoModal(producto)}
 				>
 					Agregar
 				</button>

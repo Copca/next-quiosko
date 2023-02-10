@@ -14,7 +14,7 @@ interface Props {
 Modal.setAppElement('#__next');
 
 export const Layout: FC<PropsWithChildren<Props>> = ({ children, pagina }) => {
-	const { modal, onModal } = useContext(QuioskoContext);
+	const { modal, onCerrarModal } = useContext(QuioskoContext);
 
 	return (
 		<>
@@ -40,7 +40,7 @@ export const Layout: FC<PropsWithChildren<Props>> = ({ children, pagina }) => {
 			<Modal
 				isOpen={modal}
 				shouldCloseOnOverlayClick={true}
-				onRequestClose={onModal}
+				onRequestClose={onCerrarModal}
 				className='absolute bg-white shadow border p-4 top-1/2 left-1/2 right-auto bottom-auto -translate-x-1/2 -translate-y-1/2 animate-fadeIn'
 			>
 				<ModalProducto />

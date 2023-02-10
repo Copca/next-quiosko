@@ -4,14 +4,16 @@ import { toast } from 'react-toastify';
 
 import { QuioskoContext, quioskoReducer } from './';
 
-import { ICategoria, IProducto } from '@/interfaces';
+import { ICategoria, IPedido, IProducto } from '@/interfaces';
 
 export interface QuioskoState {
 	categorias: ICategoria[];
 	categoriaActual: ICategoria | null;
 	productoSelec: IProducto | null;
 	modal: boolean;
-	pedido: IProducto[];
+	pedido: IPedido[];
+	cantidad: number;
+	edicion: boolean;
 }
 
 const QUIOSKO_INITIAL_STATE: QuioskoState = {
@@ -19,7 +21,9 @@ const QUIOSKO_INITIAL_STATE: QuioskoState = {
 	categoriaActual: null,
 	productoSelec: null,
 	modal: false,
-	pedido: []
+	pedido: [],
+	cantidad: 1,
+	edicion: false
 };
 
 export const QuioskoProvider: FC<PropsWithChildren> = ({ children }) => {
@@ -36,12 +40,31 @@ export const QuioskoProvider: FC<PropsWithChildren> = ({ children }) => {
 		obtenerCategorias();
 	}, []);
 
+	// Establecemos una categoría por default al cargar despues de hacer la peticion api
 	useEffect(() => {
 		dispatch({
-			type: '[Quiosko] - Categoria Actual Inicial',
+			type: '[Quiosko] - Categoria Actual',
 			payload: state.categorias[0]
 		});
 	}, [state.categorias]);
+
+	// Obtenemos la cantidad del Producto si este ya esta en el Pedido (Edición)
+	useEffect(() => {
+		if (
+			state.pedido.some(
+				(productoPedido) => productoPedido.id === state.productoSelec?.id
+			)
+		) {
+			const cantidaEdicion = state.pedido.find(
+				(productoPedido) => productoPedido.id === state.productoSelec?.id
+			)?.cantidad!;
+
+			dispatch({
+				type: '[Quiosko] - Actualizar Cantidad Edicion',
+				payload: cantidaEdicion
+			});
+		}
+	}, [state.productoSelec, state.pedido]);
 
 	/**
 	 * Métodos
@@ -50,32 +73,35 @@ export const QuioskoProvider: FC<PropsWithChildren> = ({ children }) => {
 		dispatch({ type: '[Quiosko] - Categoria Actual', payload: categoria });
 	};
 
-	const onModal = () => {
-		dispatch({ type: '[Quiosko] - Modal' });
-	};
-
 	const onProductoModal = (producto: IProducto) => {
-		dispatch({ type: '[Quiosko] - Producto Seleccionado', payload: producto });
+		dispatch({ type: '[Quiosko] - Producto Seleccionado Modal', payload: producto });
 	};
 
-	const onAgregarPedido = (producto: IProducto, cantidad: number) => {
-		const pedido = { ...producto, cantidad };
+	const onCerrarModal = () => {
+		dispatch({ type: '[Quiosko] - Cerrar Modal' });
+	};
 
-		if (state.pedido.some((pedidoState) => pedidoState.id === pedido.id)) {
-			// Actualizar cantidad del producto (Edicion)
-			const pedidoActualizado = state.pedido.map((pedidoState) =>
-				pedidoState.id === pedido.id ? pedido : pedidoState
-			);
+	const onActualizaCantidad = (cantidad: number) => {
+		dispatch({ type: '[Quiosko] - Actualizar Cantidad', payload: cantidad });
+	};
 
-			dispatch({
-				type: '[Quiosko] - Actualizar Cantidad Producto',
-				payload: pedidoActualizado
-			});
+	const onAgregarPedido = (producto: IProducto) => {
+		const productoPedido = { ...producto, cantidad: state.cantidad };
+
+		// Redisar si el producto existe ya en pedido editarlo
+		if (
+			state.pedido.some((productoState) => productoState.id === productoPedido.id) // return true/false
+		) {
+			// Si existe Editar Producto
+			dispatch({ type: '[Quiosko] - Editar Producto', payload: productoPedido });
 
 			toast.success('Guardado correctamente');
 		} else {
-			// Si producto no existe lo agrego al State.pedido
-			dispatch({ type: '[Quiosko] - Agregar Producto a Pedido', payload: pedido });
+			// Producto Nuevo Agrear a pedido
+			dispatch({
+				type: '[Quiosko] - Agregar Producto a Pedido',
+				payload: productoPedido
+			});
 
 			toast.success('Agregado al Pedido');
 		}
@@ -93,8 +119,9 @@ export const QuioskoProvider: FC<PropsWithChildren> = ({ children }) => {
 
 				// Metodos
 				onCategoria,
-				onModal,
+				onCerrarModal,
 				onProductoModal,
+				onActualizaCantidad,
 				onAgregarPedido,
 				onEliminarProductoPedido
 			}}

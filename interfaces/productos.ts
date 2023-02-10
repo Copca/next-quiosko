@@ -7,6 +7,8 @@ export interface IProducto {
 	imagen: string;
 	categoriaId: number;
 	categoria?: ICategoria;
+}
 
-	cantidad?: number;
+export interface IPedido extends IProducto {
+	cantidad: number;
 }

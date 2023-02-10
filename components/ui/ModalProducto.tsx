@@ -9,27 +9,15 @@ import { formatear } from '@/helpers';
 import { Contador } from './Contador';
 
 export const ModalProducto = () => {
-	const { productoSelec, pedido, onModal, onAgregarPedido } =
-		useContext(QuioskoContext);
-	const [cantidad, setCantidad] = useState(1);
-	const [edicion, setEdicion] = useState(false);
-
-	// Se establece la cantida del Producto seleccionado en Modo edición cuando carga el Modal
-	useEffect(() => {
-		// Revisamos si el productoSeleccionado (modal actual) ya esta el pedido[]
-		if (pedido.some((productoPedido) => productoPedido.id === productoSelec?.id)) {
-			const productoEdicion = pedido.find(
-				(productoPedido) => productoPedido.id === productoSelec?.id
-			);
-
-			setEdicion(true);
-			setCantidad(productoEdicion?.cantidad!);
-		}
-	}, [pedido, productoSelec]);
-
-	const onClickCantidad = (nuevaCantidad: number) => {
-		setCantidad(nuevaCantidad);
-	};
+	const {
+		productoSelec,
+		pedido,
+		cantidad,
+		edicion,
+		onActualizaCantidad,
+		onCerrarModal,
+		onAgregarPedido
+	} = useContext(QuioskoContext);
 
 	if (!productoSelec) return <></>;
 
@@ -48,7 +36,7 @@ export const ModalProducto = () => {
 				<div className='flex justify-end'>
 					<BiXCircle
 						className='text-3xl cursor-pointer hover:text-red-300'
-						onClick={onModal}
+						onClick={onCerrarModal}
 					/>
 				</div>
 
@@ -57,7 +45,7 @@ export const ModalProducto = () => {
 					{formatear.moneda(productoSelec.precio)}
 				</p>
 
-				<Contador cantidad={cantidad} onCantidad={onClickCantidad} />
+				<Contador cantidad={cantidad} onCantidad={onActualizaCantidad} />
 
 				<button
 					type='button'

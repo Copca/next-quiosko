@@ -1,15 +1,16 @@
 import { QuioskoState } from './';
 
-import { ICategoria, IProducto } from '@/interfaces';
+import { ICategoria, IPedido, IProducto } from '@/interfaces';
 
 type QuioskoActionType =
 	| { type: '[Quiosko] - Obtener Categorias'; payload: ICategoria[] }
-	| { type: '[Quiosko] - Categoria Actual Inicial'; payload: ICategoria }
 	| { type: '[Quiosko] - Categoria Actual'; payload: ICategoria }
-	| { type: '[Quiosko] - Producto Seleccionado'; payload: IProducto }
-	| { type: '[Quiosko] - Modal' }
-	| { type: '[Quiosko] - Agregar Producto a Pedido'; payload: IProducto }
-	| { type: '[Quiosko] - Actualizar Cantidad Producto'; payload: IProducto[] }
+	| { type: '[Quiosko] - Producto Seleccionado Modal'; payload: IProducto }
+	| { type: '[Quiosko] - Cerrar Modal' }
+	| { type: '[Quiosko] - Actualizar Cantidad'; payload: number }
+	| { type: '[Quiosko] - Actualizar Cantidad Edicion'; payload: number }
+	| { type: '[Quiosko] - Agregar Producto a Pedido'; payload: IPedido }
+	| { type: '[Quiosko] - Editar Producto'; payload: IPedido }
 	| { type: '[Quiosko] - Eliminar Producto de Pedido'; payload: number };
 
 export const quioskoReducer = (
@@ -23,55 +24,71 @@ export const quioskoReducer = (
 				categorias: action.payload
 			};
 
-		case '[Quiosko] - Categoria Actual Inicial':
-			return {
-				...state,
-				categoriaActual: action.payload
-			};
-
-		case '[Quiosko] - Categoria Actual Inicial':
 		case '[Quiosko] - Categoria Actual':
 			return {
 				...state,
 				categoriaActual: action.payload
 			};
 
-		case '[Quiosko] - Producto Seleccionado':
+		case '[Quiosko] - Producto Seleccionado Modal':
 			return {
 				...state,
-				productoSelec: action.payload
+				productoSelec: action.payload,
+				modal: true
 			};
 
-		case '[Quiosko] - Modal':
+		case '[Quiosko] - Cerrar Modal':
 			return {
 				...state,
-				modal: !state.modal,
-				productoSelec: state.modal ? null : state.productoSelec
+				modal: false,
+				productoSelec: null,
+				cantidad: 1,
+				edicion: false
+			};
+
+		case '[Quiosko] - Actualizar Cantidad':
+			return {
+				...state,
+				cantidad: action.payload
+			};
+
+		case '[Quiosko] - Actualizar Cantidad Edicion':
+			return {
+				...state,
+				cantidad: action.payload,
+				edicion: true
 			};
 
 		case '[Quiosko] - Agregar Producto a Pedido':
 			return {
 				...state,
-				modal: !state.modal,
 				pedido: [...state.pedido, action.payload],
-				productoSelec: null
+				modal: false,
+				productoSelec: null,
+				cantidad: 1,
+				edicion: false
 			};
 
-		case '[Quiosko] - Actualizar Cantidad Producto':
+		case '[Quiosko] - Editar Producto':
 			return {
 				...state,
-				modal: !state.modal,
-				pedido: action.payload,
-				productoSelec: null
+				pedido: state.pedido.map((productoState) =>
+					productoState.id === action.payload.id
+						? action.payload
+						: productoState
+				),
+				modal: false,
+				productoSelec: null,
+				cantidad: 1
 			};
 
-		case '[Quiosko] - Eliminar Producto de Pedido':
-			return {
-				...state,
-				pedido: state.pedido.filter(
-					(productoPedido) => productoPedido.id !== action.payload
-				)
-			};
+		// case '[Quiosko] - Eliminar Producto de Pedido':
+		// 	return {
+		// 		...state,
+		// 		pedido: state.pedido.filter(
+		// 			(productoPedido) => productoPedido.id !== action.payload
+		// 		)
+		// 	};
 
 		default:
 			return state;
