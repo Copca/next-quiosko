@@ -1,32 +1,30 @@
-import {
-	ChangeEvent,
-	FormEvent,
-	useState,
-	useContext,
-	useEffect,
-	useCallback
-} from 'react';
+import { FormEvent, useContext, useEffect, useCallback, useState } from 'react';
 import { NextPage } from 'next';
 
 import { QuioskoContext } from '@/context';
 
 import { Layout } from '@/components/layouts';
+import { formatear } from '@/helpers';
 
 const TotalPage: NextPage = () => {
-	const { pedido } = useContext(QuioskoContext);
+	const { pedido, total, enviarOrden } = useContext(QuioskoContext);
+	const [nombre, setNombre] = useState('');
 
 	// Se usa useCallback para evitar errores de multiples renderizados
-	// const comprobarPedido = () => pedido.length === 0;
-	const comprobarPedido = useCallback(() => pedido.length === 0, [pedido]); // retorna true/false
+	// Habilitar boton submit disable=true/false
+	const btnDeshabilitado = useCallback(
+		() => pedido.length === 0 || [nombre.trim()].includes('') || nombre.length < 3,
+		[pedido, nombre]
+	); // retorna true/false
 
 	useEffect(() => {
-		comprobarPedido();
-	}, [pedido, comprobarPedido]);
+		btnDeshabilitado();
+	}, [pedido, btnDeshabilitado]);
 
-	const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+	const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
-		console.log('Enviando orden...');
+		await enviarOrden(nombre);
 	};
 
 	return (
@@ -47,19 +45,22 @@ const TotalPage: NextPage = () => {
 							type='text'
 							id='nombre'
 							className='bg-gray-200 rounded w-full lg:w-1/2 mt-1 p-2'
+							value={nombre}
+							onChange={({ target }) => setNombre(target.value)}
 						/>
 					</div>
 
 					<div className='mb-4'>
 						<p className='text-2xl mb-4'>
-							Total a Pagar: <span className='font-bold'> $200</span>{' '}
+							Total a Pagar:{' '}
+							<span className='font-bold'>{formatear.moneda(total)}</span>{' '}
 						</p>
 
 						<input
 							type='submit'
 							className='btn bg-indigo-600 hover:bg-indigo-800 w-full lg:w-auto disabled:cursor-not-allowed disabled:opacity-50'
 							value={'Confirmar Pedido'}
-							disabled={comprobarPedido()}
+							disabled={btnDeshabilitado()}
 						/>
 					</div>
 				</form>

@@ -14,6 +14,7 @@ export interface QuioskoState {
 	pedido: IPedido[];
 	cantidad: number;
 	edicion: boolean;
+	total: number;
 }
 
 const QUIOSKO_INITIAL_STATE: QuioskoState = {
@@ -23,7 +24,8 @@ const QUIOSKO_INITIAL_STATE: QuioskoState = {
 	modal: false,
 	pedido: [],
 	cantidad: 1,
-	edicion: false
+	edicion: false,
+	total: 0
 };
 
 export const QuioskoProvider: FC<PropsWithChildren> = ({ children }) => {
@@ -65,6 +67,16 @@ export const QuioskoProvider: FC<PropsWithChildren> = ({ children }) => {
 			});
 		}
 	}, [state.productoSelec, state.pedido]);
+
+	// Calculamos el total a pagar del pedido
+	useEffect(() => {
+		const total = state.pedido.reduce(
+			(prev, current) => current.precio * current.cantidad + prev,
+			0
+		);
+
+		dispatch({ type: '[Quiosko] - Total a Pagar', payload: total });
+	}, [state.pedido]);
 
 	/**
 	 * Métodos
@@ -111,6 +123,12 @@ export const QuioskoProvider: FC<PropsWithChildren> = ({ children }) => {
 		dispatch({ type: '[Quiosko] - Eliminar Producto de Pedido', payload: id });
 	};
 
+	const enviarOrden = async (cliente: string) => {
+		console.log({ pedido: state.pedido });
+		console.log({ total: state.total });
+		console.log({ cliente });
+	};
+
 	return (
 		<QuioskoContext.Provider
 			value={{
@@ -123,7 +141,8 @@ export const QuioskoProvider: FC<PropsWithChildren> = ({ children }) => {
 				onProductoModal,
 				onActualizaCantidad,
 				onAgregarPedido,
-				onEliminarProductoPedido
+				onEliminarProductoPedido,
+				enviarOrden
 			}}
 		>
 			{children}

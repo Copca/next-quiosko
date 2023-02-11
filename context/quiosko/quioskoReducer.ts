@@ -11,7 +11,8 @@ type QuioskoActionType =
 	| { type: '[Quiosko] - Actualizar Cantidad Edicion'; payload: number }
 	| { type: '[Quiosko] - Agregar Producto a Pedido'; payload: IPedido }
 	| { type: '[Quiosko] - Editar Producto'; payload: IPedido }
-	| { type: '[Quiosko] - Eliminar Producto de Pedido'; payload: number };
+	| { type: '[Quiosko] - Eliminar Producto de Pedido'; payload: number }
+	| { type: '[Quiosko] - Total a Pagar'; payload: number };
 
 export const quioskoReducer = (
 	state: QuioskoState,
@@ -82,13 +83,19 @@ export const quioskoReducer = (
 				cantidad: 1
 			};
 
-		// case '[Quiosko] - Eliminar Producto de Pedido':
-		// 	return {
-		// 		...state,
-		// 		pedido: state.pedido.filter(
-		// 			(productoPedido) => productoPedido.id !== action.payload
-		// 		)
-		// 	};
+		case '[Quiosko] - Eliminar Producto de Pedido':
+			return {
+				...state,
+				pedido: state.pedido.filter(
+					(productoPedido) => productoPedido.id !== action.payload
+				)
+			};
+
+		case '[Quiosko] - Total a Pagar':
+			return {
+				...state,
+				total: action.payload
+			};
 
 		default:
 			return state;

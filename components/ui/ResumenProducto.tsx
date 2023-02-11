@@ -5,15 +5,14 @@ import { FaRegTrashAlt, FaEdit } from 'react-icons/fa';
 
 import { QuioskoContext } from '@/context';
 import { formatear } from '@/helpers';
-import { IProducto } from '@/interfaces';
+import { IPedido } from '@/interfaces';
 
 interface Props {
-	producto: IProducto;
+	producto: IPedido;
 }
 
 export const ResumenProducto: FC<Props> = ({ producto }) => {
-	const { onModal, onProductoModal, onEliminarProductoPedido } =
-		useContext(QuioskoContext);
+	const { onProductoModal, onEliminarProductoPedido } = useContext(QuioskoContext);
 
 	return (
 		<div className='flex items-center gap-10 shadow p-5 mb-3'>
@@ -41,10 +40,7 @@ export const ResumenProducto: FC<Props> = ({ producto }) => {
 				<button
 					type='button'
 					className='btn bg-sky-700 hover:bg-sky-800'
-					onClick={() => {
-						onModal();
-						onProductoModal(producto);
-					}}
+					onClick={() => onProductoModal(producto)}
 				>
 					<FaEdit className='mr-2' />
 					Editar

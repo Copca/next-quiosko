@@ -11,6 +11,7 @@ interface ContextProps {
 	pedido: IPedido[];
 	cantidad: number;
 	edicion: boolean;
+	total: number;
 
 	// Metodos
 	onCategoria: (categoria: ICategoria) => void;
@@ -19,6 +20,7 @@ interface ContextProps {
 	onActualizaCantidad: (cantidad: number) => void;
 	onAgregarPedido: (producto: IProducto, cantidad: number) => void;
 	onEliminarProductoPedido: (id: number) => void;
+	enviarOrden: (cliente: string) => Promise<void>;
 }
 
 export const QuioskoContext = createContext({} as ContextProps);
