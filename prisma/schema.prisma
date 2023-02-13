@@ -16,8 +16,8 @@ model Producto {
   nombre String
   precio Float
   imagen String
-	categoriaId Int
 	categoria Categoria @relation(fields: [categoriaId], references: [id])
+	categoriaId Int
 }
 
 model Categoria {

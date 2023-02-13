@@ -21,10 +21,10 @@ const TotalPage: NextPage = () => {
 		btnDeshabilitado();
 	}, [pedido, btnDeshabilitado]);
 
-	const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
+	const onSubmit = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
-		await enviarOrden(nombre);
+		enviarOrden(nombre);
 	};
 
 	return (

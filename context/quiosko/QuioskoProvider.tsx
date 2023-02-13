@@ -1,4 +1,5 @@
 import { FC, PropsWithChildren, useEffect, useReducer } from 'react';
+import { useRouter } from 'next/router';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
@@ -30,6 +31,7 @@ const QUIOSKO_INITIAL_STATE: QuioskoState = {
 
 export const QuioskoProvider: FC<PropsWithChildren> = ({ children }) => {
 	const [state, dispatch] = useReducer(quioskoReducer, QUIOSKO_INITIAL_STATE);
+	const router = useRouter();
 
 	// Hacemos la consulta a la DB
 	useEffect(() => {
@@ -98,7 +100,7 @@ export const QuioskoProvider: FC<PropsWithChildren> = ({ children }) => {
 	};
 
 	const onAgregarPedido = (producto: IProducto) => {
-		const productoPedido = { ...producto, cantidad: state.cantidad };
+		const productoPedido = { ...producto, cantidad: state.cantidad }; // Agregamos la cantidad
 
 		// Redisar si el producto existe ya en pedido editarlo
 		if (
@@ -123,10 +125,27 @@ export const QuioskoProvider: FC<PropsWithChildren> = ({ children }) => {
 		dispatch({ type: '[Quiosko] - Eliminar Producto de Pedido', payload: id });
 	};
 
-	const enviarOrden = async (cliente: string) => {
-		console.log({ pedido: state.pedido });
-		console.log({ total: state.total });
-		console.log({ cliente });
+	const enviarOrden = async (nombre: string) => {
+		try {
+			await axios.post('/api/ordenes', {
+				nombre,
+				fecha: Date.now().toString(),
+				total: state.total,
+				pedido: state.pedido
+			});
+
+			dispatch({ type: '[Quiosko] - Reset State' });
+
+			toast.success('Pedido enviado');
+
+			setTimeout(() => {
+				router.push('/');
+			}, 3000);
+		} catch (error) {
+			if (axios.isAxiosError(error)) {
+				console.log(error.response?.data.message);
+			}
+		}
 	};
 
 	return (

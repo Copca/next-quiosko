@@ -12,7 +12,8 @@ type QuioskoActionType =
 	| { type: '[Quiosko] - Agregar Producto a Pedido'; payload: IPedido }
 	| { type: '[Quiosko] - Editar Producto'; payload: IPedido }
 	| { type: '[Quiosko] - Eliminar Producto de Pedido'; payload: number }
-	| { type: '[Quiosko] - Total a Pagar'; payload: number };
+	| { type: '[Quiosko] - Total a Pagar'; payload: number }
+	| { type: '[Quiosko] - Reset State' };
 
 export const quioskoReducer = (
 	state: QuioskoState,
@@ -95,6 +96,14 @@ export const quioskoReducer = (
 			return {
 				...state,
 				total: action.payload
+			};
+
+		case '[Quiosko] - Reset State':
+			return {
+				...state,
+				categoriaActual: state.categorias[0],
+				pedido: [],
+				total: 0
 			};
 
 		default:

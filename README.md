@@ -71,13 +71,13 @@ npm i @prisma/client
 npx prisma init
 ```
 
-Despues de hacer el modelado de la DB
+Despues de hacer el modelado de la DB (pasa el código de Prisma a SQL)
 
 ```
 npx prisma migrate dev
 ```
 
-Reset DB con prisma
+Reset de la DB con Prisma
 
 ```
 npx prisma migrate reset
