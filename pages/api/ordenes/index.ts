@@ -31,7 +31,11 @@ const crearOrden = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
 
 // GET /api/ordenes
 const obtenerOrdenes = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
-	const ordenes = await prisma.orden.findMany();
+	const ordenes = await prisma.orden.findMany({
+		where: {
+			estado: false
+		}
+	});
 
 	return res.status(200).json(ordenes);
 };

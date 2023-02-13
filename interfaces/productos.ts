@@ -12,3 +12,12 @@ export interface IProducto {
 export interface IPedido extends IProducto {
 	cantidad: number;
 }
+
+export interface IOrden {
+	id: number;
+	nombre: string;
+	fecha: string;
+	total: number;
+	pedido: IPedido[];
+	estado: boolean;
+}

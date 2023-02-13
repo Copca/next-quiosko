@@ -21,6 +21,7 @@ interface ContextProps {
 	onAgregarPedido: (producto: IProducto, cantidad: number) => void;
 	onEliminarProductoPedido: (id: number) => void;
 	enviarOrden: (cliente: string) => Promise<void>;
+	completarOrden: (orden: number) => void;
 }
 
 export const QuioskoContext = createContext({} as ContextProps);

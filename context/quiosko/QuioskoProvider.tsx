@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 
 import { QuioskoContext, quioskoReducer } from './';
 
-import { ICategoria, IPedido, IProducto } from '@/interfaces';
+import { ICategoria, IOrden, IPedido, IProducto } from '@/interfaces';
 
 export interface QuioskoState {
 	categorias: ICategoria[];
@@ -148,6 +148,17 @@ export const QuioskoProvider: FC<PropsWithChildren> = ({ children }) => {
 		}
 	};
 
+	const completarOrden = async (ordenId: number) => {
+		try {
+			await axios.post(`/api/ordenes/${ordenId}`);
+
+			toast.success('Orden Lista');
+		} catch (error) {
+			console.log(error);
+			toast.error('Hubo un error');
+		}
+	};
+
 	return (
 		<QuioskoContext.Provider
 			value={{
@@ -161,7 +172,8 @@ export const QuioskoProvider: FC<PropsWithChildren> = ({ children }) => {
 				onActualizaCantidad,
 				onAgregarPedido,
 				onEliminarProductoPedido,
-				enviarOrden
+				enviarOrden,
+				completarOrden
 			}}
 		>
 			{children}
