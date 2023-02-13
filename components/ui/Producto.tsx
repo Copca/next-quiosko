@@ -10,7 +10,7 @@ interface Props {
 }
 
 export const Producto: FC<Props> = ({ producto }) => {
-	const { onProductoModal, onModal } = useContext(QuioskoContext);
+	const { onProductoModal } = useContext(QuioskoContext);
 	const { id, imagen, nombre, precio } = producto;
 
 	return (
